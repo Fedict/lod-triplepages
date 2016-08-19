@@ -38,8 +38,11 @@ import org.apache.commons.cli.Options;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.rdf4j.IsolationLevel;
+import org.eclipse.rdf4j.IsolationLevels;
 
 import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
@@ -107,7 +110,10 @@ public class Main {
 			LOG.error("Could not find parser for file");
 		}
 		try {
-			repo.getConnection().add(f, null, fmt.get());
+			RepositoryConnection conn = repo.getConnection();
+			conn.begin(IsolationLevels.NONE);
+			conn.add(f, null, fmt.get());
+			conn.commit();
 			status = true;
 		} catch (IOException ex) {
 			LOG.error("Could not load file", ex);
