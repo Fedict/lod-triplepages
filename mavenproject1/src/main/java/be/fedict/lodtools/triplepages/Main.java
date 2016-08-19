@@ -37,6 +37,7 @@ import org.apache.commons.cli.Options;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ContextHandler;
 
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
@@ -151,11 +152,19 @@ public class Main {
 		
 		LOG.info("Starting embedded server on port {}", port);
 		
-		Server server = new Server();		
+		Server server = new Server();
+		
 		ServerConnector http = new ServerConnector(server);
-        http.setPort(Integer.valueOf(port));
+		http.setPort(Integer.valueOf(port));
 		server.addConnector(http);
-		server.setHandler(new TriplesHandler(repo));
+		
+		ContextHandler context = new ContextHandler();		
+		if (line.hasOption('v')) {
+			String[] vhosts = line.getOptionValue('v', "").split(",");
+			context.setVirtualHosts(vhosts);
+		}
+		context.setHandler(new TriplesHandler(repo));
+		server.setHandler(context);
 		
 		server.start();
 		server.join();
