@@ -39,13 +39,13 @@ import org.eclipse.rdf4j.repository.Repository;
  *
  * @author Bart.Hanssens
  */
-
+@Path("/{type: statsect}")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class GeoResource extends RdfResource {
 	private final static String PREFIX = "http://geo.belgif.be/";
 		
 	@GET
-	@Path("{type: statsect}/{id}")
+	@Path("/{id}")
 	public Model getOrganisation(@PathParam("type") String type, @PathParam("id") String id) {
 		return getById(PREFIX, type, id);
 	}

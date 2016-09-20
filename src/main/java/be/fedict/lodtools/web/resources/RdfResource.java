@@ -35,7 +35,7 @@ import javax.ws.rs.WebApplicationException;
 
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Model;
-import org.eclipse.rdf4j.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.model.vocabulary.DCTERMS;
@@ -81,8 +81,8 @@ public abstract class RdfResource {
 	 * @param uri
 	 * @return URI representation
 	 */
-	protected URI asURI(String uri) {
-		return fac.createURI(uri);
+	protected IRI asURI(String uri) {
+		return fac.createIRI(uri);
 	}
 	
 	/**

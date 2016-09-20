@@ -39,12 +39,13 @@ import org.eclipse.rdf4j.repository.Repository;
  *
  * @author Bart.Hanssens
  */
+@Path("/{type: nace2008|nis2008}")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class VocabResource extends RdfResource {
 	private final static String PREFIX = "http://vocab.belgif.be/";
 		
 	@GET
-	@Path("/{type: nace2008|nis2008}/{id}")
+	@Path("/{id}")
 	public Model getVocab(@PathParam("type") String type, @PathParam("id") String id) {
 		return getById(PREFIX, type, id);
 	}
