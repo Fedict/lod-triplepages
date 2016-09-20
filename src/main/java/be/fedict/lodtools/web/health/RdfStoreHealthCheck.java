@@ -26,7 +26,7 @@
 package be.fedict.lodtools.web.health;
 
 import com.codahale.metrics.health.HealthCheck;
-import org.openrdf.repository.Repository;
+import org.eclipse.rdf4j.repository.Repository;
 
 /**
  * Check if triple store can be reached

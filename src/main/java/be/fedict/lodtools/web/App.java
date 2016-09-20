@@ -35,8 +35,8 @@ import be.fedict.lodtools.web.resources.VocabResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
 
-import org.openrdf.repository.manager.RepositoryManager;
-import org.openrdf.repository.manager.RepositoryProvider;
+import org.eclipse.rdf4j.repository.manager.RepositoryManager;
+import org.eclipse.rdf4j.repository.manager.RepositoryProvider;
 
 
 /**
