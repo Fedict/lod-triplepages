@@ -30,10 +30,15 @@ import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
 import be.fedict.lodtools.web.resources.CpsvResource;
 import be.fedict.lodtools.web.resources.GeoResource;
 import be.fedict.lodtools.web.resources.OrgResource;
+import be.fedict.lodtools.web.resources.RdfResource;
 import be.fedict.lodtools.web.resources.VocabResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
+import org.eclipse.rdf4j.repository.Repository;
 
 import org.eclipse.rdf4j.repository.manager.RepositoryManager;
 import org.eclipse.rdf4j.repository.manager.RepositoryProvider;
@@ -64,10 +69,21 @@ public class App extends Application<AppConfig> {
 		RdfStoreHealthCheck check = new RdfStoreHealthCheck(mgr.getSystemRepository());
 		env.healthChecks().register("triplestore", check);
 
-		env.jersey().register(new OrgResource(mgr.getRepository("cbe")));
-	/*	env.jersey().register(new GeoResource(mgr.getRepository("geo")));
-		env.jersey().register(new VocabResource(mgr.getRepository("vocab")));
-		env.jersey().register(new CpsvResource(mgr.getRepository("cpsv"))); */
+		// Repositories
+		Map<String,Class<RdfResource>> map = new HashMap() {{
+			put("cbe", OrgResource.class);
+			put("geo", GeoResource.class);
+			put("vocab", VocabResource.class);
+			put("cpsv", CpsvResource.class);
+		}};
+		
+		for(String name: map.keySet()) {
+			Repository repo = mgr.getRepository(name);
+			if (repo != null) {
+				Constructor c = map.get(name).getConstructor(String.class);
+				env.jersey().register(c.newInstance(name));
+			}
+		}
 	}
 	
 	/**
