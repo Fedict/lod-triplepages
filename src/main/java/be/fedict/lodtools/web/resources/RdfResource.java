@@ -32,6 +32,7 @@ import java.util.Map;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import org.glassfish.hk2.utilities.reflection.Logger;
 
 import org.openrdf.model.Literal;
 import org.openrdf.model.Model;
@@ -69,9 +70,9 @@ public abstract class RdfResource {
 			"CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }";
 	
 	private final static String Q_FTS = 
-			"PREFIX bds: <http://www.bigdata.com/rdf/search#> "
+			"PREFIX luc: <http://www.ontotext.com/owlim/lucene#> "
 			+ "CONSTRUCT { ?s ?p ?o } WHERE { "
-			+ "?o bds:lit ?fts . "
+			+ "?o luc:myIndex ?fts . "
 			+ "?s ?p o } "
 			+ "LIMIT 100";
 		

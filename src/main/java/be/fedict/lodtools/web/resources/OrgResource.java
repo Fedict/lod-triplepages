@@ -31,6 +31,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.openrdf.model.Model;
 import org.openrdf.repository.Repository;
@@ -39,20 +40,20 @@ import org.openrdf.repository.Repository;
  *
  * @author Bart.Hanssens
  */
-
+@Path("/cbe")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class OrgResource extends RdfResource {
 	private final static String PREFIX = "http://org.belgif.be/cbe/";
 
 	@GET
-	@Path("/cbe/{type: org|registration|site}/{id}")
+	@Path("/{type: org|registration|site}/{id}")
 	public Model getOrganisation(@PathParam("type") String type, @PathParam("id") String id) {
 		return getById(PREFIX, type, id);
 	}
 	
 	@GET
-	@Path("/cbe/{type: org|registration|site}/_search?q={text}")
-	public Model searchOrganisation(@PathParam("type") String type, @PathParam("text") String text) {
+	@Path("/{type: org|registration|site}/_search")
+	public Model searchOrganisation(@PathParam("type") String type, @QueryParam("q") String text) {
 		return getFTS(PREFIX, type, text);
 	}
 			

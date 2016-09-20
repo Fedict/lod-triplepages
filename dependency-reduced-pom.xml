@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>be.fedict.lodtools</groupId>
   <artifactId>triplepages</artifactId>
-  <name>TriplePages</name>
+  <name>lod-triplepages</name>
   <version>1.0-SNAPSHOT</version>
   <description>Simple front-end for RDF triple store</description>
   <build>
