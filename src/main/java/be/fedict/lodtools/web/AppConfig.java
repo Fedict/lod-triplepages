@@ -39,6 +39,10 @@ public class AppConfig extends Configuration {
 	@URL
 	private String sparqlPoint;
 
+	private String username;
+	private String password;
+	
+
 	@JsonProperty
 	public String getSparqlPoint() {
 		return sparqlPoint;
@@ -48,4 +52,24 @@ public class AppConfig extends Configuration {
 	public void setSparqlPoint(String sparqlPoint) {
 		this.sparqlPoint = sparqlPoint;
 	}	
+
+	@JsonProperty
+	public String getUsername() {
+		return username;
+	}
+	
+	@JsonProperty
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@JsonProperty
+	public String getPassword() {
+		return password;
+	}
+
+	@JsonProperty
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

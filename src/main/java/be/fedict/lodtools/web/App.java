@@ -35,13 +35,16 @@ import be.fedict.lodtools.web.resources.VocabResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
+
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.rdf4j.repository.Repository;
+import javax.ws.rs.WebApplicationException;
 
-import org.eclipse.rdf4j.repository.manager.RepositoryManager;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.manager.RemoteRepositoryManager;
 import org.eclipse.rdf4j.repository.manager.RepositoryProvider;
+import org.glassfish.hk2.utilities.reflection.Logger;
 
 
 /**
@@ -55,15 +58,35 @@ public class App extends Application<AppConfig> {
 		return "lod-triplepages";
 	}
 	
+	/**
+	 * Initialize specific Resource class
+	 * 
+	 * @param cl
+	 * @param repo repository
+	 * @return resource class
+	 */
+	private Object getResource(Class<RdfResource> cl, Repository repo) {
+		try {
+			Constructor c = cl.getConstructor(Repository.class);
+			return c.newInstance(repo);
+		} catch (ReflectiveOperationException ex) {
+			throw new WebApplicationException(ex);
+		}
+	}
+	
 	@Override
-    public void run(AppConfig config, Environment env) throws Exception {
+    public void run(AppConfig config, Environment env) {
 		
 		// RDF Serialization formats
 		env.jersey().register(new RDFMessageBodyWriter());
 		
 		// Managed resource
 		String endpoint = config.getSparqlPoint();
-		RepositoryManager mgr = RepositoryProvider.getRepositoryManager(endpoint);
+		RemoteRepositoryManager mgr = 
+				(RemoteRepositoryManager) RepositoryProvider.getRepositoryManager(endpoint);
+		if (config.getUsername() != null) {
+			mgr.setUsernameAndPassword(config.getUsername(), config.getPassword());
+		}
 		
 		// Monitoring
 		RdfStoreHealthCheck check = new RdfStoreHealthCheck(mgr.getSystemRepository());
@@ -80,8 +103,8 @@ public class App extends Application<AppConfig> {
 		for(String name: map.keySet()) {
 			Repository repo = mgr.getRepository(name);
 			if (repo != null) {
-				Constructor c = map.get(name).getConstructor(Repository.class);
-				env.jersey().register(c.newInstance(repo));
+				Object resource = getResource(map.get(name), repo);
+				env.jersey().register(resource);
 			}
 		}
 	}

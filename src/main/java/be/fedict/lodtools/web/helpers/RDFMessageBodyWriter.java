@@ -48,7 +48,9 @@ import org.eclipse.rdf4j.rio.Rio;
  * @author Bart.Hanssens
  */
 @Provider
-@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
+@Produces({RDFMediaType.JSONLD + ";charset=utf-8", 
+			RDFMediaType.NTRIPLES + ";charset=utf-8", 
+			RDFMediaType.TTL + ";charset=utf-8"})
 public class RDFMessageBodyWriter implements MessageBodyWriter<Model> {
 	@Override
 	public boolean isWriteable(Class<?> type, Type generic, Annotation[] antns, MediaType mt) {
