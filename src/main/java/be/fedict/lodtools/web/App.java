@@ -52,7 +52,7 @@ import org.eclipse.rdf4j.repository.manager.RepositoryProvider;
 public class App extends Application<AppConfig> {
 	@Override
 	public String getName() {
-		return "lod-cbe";
+		return "lod-triplepages";
 	}
 	
 	@Override
@@ -71,17 +71,17 @@ public class App extends Application<AppConfig> {
 
 		// Repositories
 		Map<String,Class<RdfResource>> map = new HashMap() {{
-			put("cbe", OrgResource.class);
-			put("geo", GeoResource.class);
-			put("vocab", VocabResource.class);
-			put("cpsv", CpsvResource.class);
+			put("CBE", OrgResource.class);
+			put("GEO", GeoResource.class);
+			put("VOCAB", VocabResource.class);
+			put("CPSV", CpsvResource.class);
 		}};
 		
 		for(String name: map.keySet()) {
 			Repository repo = mgr.getRepository(name);
 			if (repo != null) {
-				Constructor c = map.get(name).getConstructor(String.class);
-				env.jersey().register(c.newInstance(name));
+				Constructor c = map.get(name).getConstructor(Repository.class);
+				env.jersey().register(c.newInstance(repo));
 			}
 		}
 	}

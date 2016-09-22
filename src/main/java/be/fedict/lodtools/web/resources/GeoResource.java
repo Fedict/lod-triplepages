@@ -26,6 +26,7 @@
 package be.fedict.lodtools.web.resources;
 
 import be.fedict.lodtools.web.helpers.RDFMediaType;
+import com.codahale.metrics.annotation.ExceptionMetered;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -46,6 +47,7 @@ public class GeoResource extends RdfResource {
 		
 	@GET
 	@Path("/{id}")
+	@ExceptionMetered
 	public Model getOrganisation(@PathParam("type") String type, @PathParam("id") String id) {
 		return getById(PREFIX, type, id);
 	}

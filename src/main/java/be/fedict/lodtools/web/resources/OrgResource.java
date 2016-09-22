@@ -26,6 +26,7 @@
 package be.fedict.lodtools.web.resources;
 
 import be.fedict.lodtools.web.helpers.RDFMediaType;
+import com.codahale.metrics.annotation.ExceptionMetered;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -47,12 +48,14 @@ public class OrgResource extends RdfResource {
 
 	@GET
 	@Path("/{type: org|registration|site}/{id}")
+	@ExceptionMetered
 	public Model getOrganisation(@PathParam("type") String type, @PathParam("id") String id) {
 		return getById(PREFIX, type, id);
 	}
 	
 	@GET
 	@Path("/{type: org|registration|site}/_search")
+	@ExceptionMetered
 	public Model searchOrganisation(@PathParam("type") String type, @QueryParam("q") String text) {
 		return getFTS(PREFIX, type, text);
 	}
