@@ -26,6 +26,7 @@
 package be.fedict.lodtools.web.resources;
 
 import be.fedict.lodtools.web.helpers.RDFMediaType;
+
 import com.codahale.metrics.annotation.ExceptionMetered;
 
 import javax.ws.rs.GET;
@@ -33,6 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.repository.Repository;
@@ -42,7 +44,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * @author Bart.Hanssens
  */
 @Path("/cbe")
-@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
+@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL, MediaType.TEXT_HTML})
 public class OrgResource extends RdfResource {
 	private final static String PREFIX = "http://org.belgif.be/cbe/";
 

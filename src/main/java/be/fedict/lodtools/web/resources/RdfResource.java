@@ -32,6 +32,7 @@ import java.util.Map;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Model;
@@ -60,7 +61,7 @@ import org.eclipse.rdf4j.repository.RepositoryException;
  * @author Bart.Hanssens
  */
 
-@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES})
+@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL, MediaType.TEXT_HTML})
 public abstract class RdfResource {
 	private final Repository repo;
 	private final ValueFactory fac;
