@@ -1,0 +1,18 @@
+# OntoText GraphDB 7.1 Free edition
+FROM openjdk:8-jre-alpine
+MAINTAINER Bart Hanssens <bart.hanssens@fedict.be>
+
+RUN apk update && apk upgrade && \
+  apk add --no-cache unzip wget ca-certificates && update-ca-certificates
+RUN adduser -S grapdhb
+COPY graphdb-free-7.1.0-dist.zip /usr/local/graphdb.zip
+RUN cd /usr/local && unzip /usr/local/graphdb.zip && rm /usr/local/graphdb.zip
+
+USER graphdb
+WORKDIR /home/graphdb
+
+CMD /usr/local/graphdb-free-7.1.0/bin/graphdb -s -Dgraphdb.home=/home/graphdb
+
+EXPOSE 7200
+
+VOLUME /home/graphdb/data
