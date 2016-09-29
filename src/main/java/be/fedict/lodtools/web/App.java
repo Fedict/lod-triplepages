@@ -25,6 +25,8 @@
  */
 package be.fedict.lodtools.web;
 
+import be.fedict.lodtools.web.auth.DummyUser;
+import be.fedict.lodtools.web.auth.UpdateAuth;
 import be.fedict.lodtools.web.health.RdfStoreHealthCheck;
 import be.fedict.lodtools.web.helpers.HTMLMessageBodyWriter;
 import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
@@ -35,6 +37,8 @@ import be.fedict.lodtools.web.resources.RdfResource;
 import be.fedict.lodtools.web.resources.VocabResource;
 
 import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.setup.Environment;
 
 import java.lang.reflect.Constructor;
@@ -80,7 +84,7 @@ public class App extends Application<AppConfig> {
 		
 		// RDF Serialization formats
 		env.jersey().register(new RDFMessageBodyWriter());
-		env.jersey().register(new HTMLMessageBodyWriter());
+		//env.jersey().register(new HTMLMessageBodyWriter());
 		
 		// Managed resource
 		String endpoint = config.getSparqlPoint();
@@ -94,6 +98,12 @@ public class App extends Application<AppConfig> {
 		RdfStoreHealthCheck check = new RdfStoreHealthCheck(mgr.getSystemRepository());
 		env.healthChecks().register("triplestore", check);
 
+		// Authentication
+		env.jersey().register(new AuthDynamicFeature(
+				new BasicCredentialAuthFilter.Builder<DummyUser>()
+						.setAuthenticator(new UpdateAuth())
+						.buildAuthFilter()));
+		
 		// Repositories
 		Map<String,Class<RdfResource>> map = new HashMap() {{
 			put("CBE", OrgResource.class);

@@ -30,6 +30,8 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -37,8 +39,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
+import org.apache.commons.io.Charsets;
+import org.eclipse.rdf4j.model.IRI;
 
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Namespace;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
@@ -64,6 +69,20 @@ public class HTMLMessageBodyWriter implements MessageBodyWriter<Model> {
 		return 0; // ignored by Jersey 2.0 anyway
 	}
 
+	private String shorten(Set<Namespace> ns, IRI pred) {
+		String pref = "";
+		for(Namespace n: ns) {
+			if (n.getName().equals(pred.getNamespace())) {
+				pref = n.getPrefix();
+				break;
+			}
+		}
+		if (! pref.isEmpty()) {
+			return pref + ":" + pred.getLocalName();
+		}
+		return pred.stringValue();
+	}
+	
 	private String link(Value val) {
 		String href = val.stringValue();
 		if (val instanceof Resource) {
@@ -87,6 +106,18 @@ public class HTMLMessageBodyWriter implements MessageBodyWriter<Model> {
 				.append("</head>\n")
 				.append("<body>\n");
 		
+
+		builder.append("<table>\n")
+				.append("<tr><th>Namespace</th><th><tr>Prefix</tr>");
+		Set<Namespace> ns = m.getNamespaces();
+
+		for (Namespace n: ns) {
+			builder.append("<tr><td>")
+					.append(n.getName()).append("</td><td>")
+					.append(n.getPrefix()).append("</td><td>\n");
+		}
+		builder.append("</table>\n");
+		
 		builder.append("<table>\n").
 				append("<tr><th>Subject</th><th>Predicate</th><th>Object<th></tr>\n");
 		
@@ -95,7 +126,7 @@ public class HTMLMessageBodyWriter implements MessageBodyWriter<Model> {
 			Statement stmt = iter.next();
 			builder.append("<tr><td>")
 					.append(stmt.getSubject()).append("</td><td>")
-					.append(stmt.getPredicate()).append("</td><td>");
+					.append(shorten(ns, stmt.getPredicate())).append("</td><td>");
 			builder.append(link(stmt.getObject())).append("</td></tr>\n");
 		}
 		builder.append("</table>\n");
@@ -103,7 +134,7 @@ public class HTMLMessageBodyWriter implements MessageBodyWriter<Model> {
 		builder.append("</body>\n")
 				.append("</html>");
 		
-		out.write(builder.toString().getBytes());
+		out.write(builder.toString().getBytes(Charsets.UTF_8));
 		out.flush();
 	}
 }
