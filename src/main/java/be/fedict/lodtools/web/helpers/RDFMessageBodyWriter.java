@@ -30,10 +30,12 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
@@ -66,12 +68,17 @@ public class RDFMessageBodyWriter implements MessageBodyWriter<Model> {
 	public void writeTo(Model m, Class<?> type, Type generic, Annotation[] antns, MediaType mt, 
 										MultivaluedMap<String, Object> mm, OutputStream out) 
 									throws IOException, WebApplicationException {
+		if (m.isEmpty()) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+		
 		RDFFormat fmt;
 		switch(mt.toString()) {
 			case RDFMediaType.NTRIPLES: fmt = RDFFormat.NTRIPLES; break;
 			case RDFMediaType.TTL: fmt = RDFFormat.TURTLE; break;
 			default: fmt = RDFFormat.JSONLD; break;
 		}
+		
 		try {
 			Rio.write(m, out, fmt);
 		} catch (RDFHandlerException ex) {

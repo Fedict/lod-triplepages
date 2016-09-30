@@ -118,12 +118,13 @@ public abstract class RdfResource {
 			Model m = QueryResults.asModel(gq.evaluate());
 			conn.close();
 			
-			m.setNamespace(DCTERMS.PREFIX, DCTERMS.NAMESPACE);
-			m.setNamespace(FOAF.PREFIX, FOAF.NAMESPACE);
-			m.setNamespace(OWL.PREFIX, OWL.NAMESPACE);
-			m.setNamespace(RDF.PREFIX, RDF.NAMESPACE);
-			m.setNamespace(SKOS.PREFIX, SKOS.NAMESPACE);
-			
+			if (! m.isEmpty()) {
+				m.setNamespace(DCTERMS.PREFIX, DCTERMS.NAMESPACE);
+				m.setNamespace(FOAF.PREFIX, FOAF.NAMESPACE);
+				m.setNamespace(OWL.PREFIX, OWL.NAMESPACE);
+				m.setNamespace(RDF.PREFIX, RDF.NAMESPACE);
+				m.setNamespace(SKOS.PREFIX, SKOS.NAMESPACE);
+			}
 			return m;
 		} catch (RepositoryException|MalformedQueryException|QueryEvaluationException e) {
 			throw new WebApplicationException(e);
