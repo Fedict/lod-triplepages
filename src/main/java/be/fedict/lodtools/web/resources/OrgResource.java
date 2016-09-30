@@ -44,9 +44,10 @@ import org.eclipse.rdf4j.repository.Repository;
  * @author Bart.Hanssens
  */
 @Path("/cbe")
-@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL, MediaType.TEXT_HTML})
+@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class OrgResource extends RdfResource {
-	private final static String PREFIX = "http://org.belgif.be/cbe/";
+	public final static String PREFIX = "http://org.belgif.be/cbe/";
+	public final static String ACTIVITY = "http://www.w3.org/ns/regorg#orgActivity";
 
 	@GET
 	@Path("/{type: org|registration|site}/{id}")
@@ -59,9 +60,16 @@ public class OrgResource extends RdfResource {
 	@Path("/{type: org|registration|site}/_search")
 	@ExceptionMetered
 	public Model searchOrganisation(@PathParam("type") String type, @QueryParam("q") String text) {
-		return getFTS(PREFIX, type, text);
+		return getFTS(text);
 	}
-			
+	
+	@GET
+	@Path("/{type: org|registration|site}/_filter")
+	@ExceptionMetered
+	public Model searchByNace(@PathParam("type") String type, @QueryParam("nace") String text) {
+		return getFiltered(ACTIVITY, VocabResource.PREFIX, text + "#id");
+	}
+	
 	public OrgResource(Repository repo) {
 		super(repo);
 	}

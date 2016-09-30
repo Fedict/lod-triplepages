@@ -28,7 +28,6 @@ package be.fedict.lodtools.web;
 import be.fedict.lodtools.web.auth.DummyUser;
 import be.fedict.lodtools.web.auth.UpdateAuth;
 import be.fedict.lodtools.web.health.RdfStoreHealthCheck;
-import be.fedict.lodtools.web.helpers.HTMLMessageBodyWriter;
 import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
 import be.fedict.lodtools.web.resources.CpsvResource;
 import be.fedict.lodtools.web.resources.GeoResource;
@@ -93,6 +92,7 @@ public class App extends Application<AppConfig> {
 		if (config.getUsername() != null) {
 			mgr.setUsernameAndPassword(config.getUsername(), config.getPassword());
 		}
+		mgr.initialize();
 		
 		// Monitoring
 		RdfStoreHealthCheck check = new RdfStoreHealthCheck(mgr.getSystemRepository());

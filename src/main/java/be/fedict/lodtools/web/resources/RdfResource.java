@@ -61,7 +61,7 @@ import org.eclipse.rdf4j.repository.RepositoryException;
  * @author Bart.Hanssens
  */
 
-@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL, MediaType.TEXT_HTML})
+@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public abstract class RdfResource {
 	private final Repository repo;
 	private final ValueFactory fac;
@@ -70,12 +70,19 @@ public abstract class RdfResource {
 			"CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }";
 	
 	private final static String Q_FTS = 
-			"PREFIX luc: <http://www.ontotext.com/owlim/lucene#> "
-			+ "CONSTRUCT { ?s ?p ?o } WHERE { "
+			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+			+ "PREFIX luc: <http://www.ontotext.com/owlim/lucene#> "
+			+ "CONSTRUCT { ?s rdfs:label ?o } WHERE { "
 			+ "?o luc:myIndex ?fts . "
 			+ "?s ?p ?o } "
-			+ "LIMIT 100";
-		
+			+ "LIMIT 200";
+	
+	private final static String Q_FILTER =
+			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+			+ "CONSTRUCT { ?s rdfs:label ?o } "
+			+ "WHERE { ?s rdfs:label ?o ."
+			+		" ?s ?filter ?val }";
+	
 	/**
 	 * Get string as URI
 	 * 
@@ -107,7 +114,7 @@ public abstract class RdfResource {
 			RepositoryConnection conn = this.repo.getConnection();
 			GraphQuery gq = conn.prepareGraphQuery(QueryLanguage.SPARQL, qry);
 			bindings.forEach((k,v) -> gq.setBinding(k, v));
-			
+
 			Model m = QueryResults.asModel(gq.evaluate());
 			conn.close();
 			
@@ -140,17 +147,29 @@ public abstract class RdfResource {
 	/**
 	 * Full text search
 	 * 
-	 * @param prefix
-	 * @param type
-	 * @param text
+	 * @param text text to search for
 	 * @return RDF model 
 	 */
-	protected Model getFTS(String prefix, String type, String text) {
+	protected Model getFTS(String text) {
 		Map<String,Value> map = new HashMap();
 		map.put("fts", asLiteral(text + "*"));
 		return prepare(Q_FTS, map);
 	}
 	
+	/**
+	 * Filter on property
+	 * 
+	 * @param prop property URI as string
+	 * @param prefix value prefix
+	 * @param id value id
+	 * @return RDF model
+	 */
+	protected Model getFiltered(String prop, String prefix, String id) {
+		Map<String,Value> map = new HashMap();
+		map.put("filter", asURI(prop));
+		map.put("val", asURI(prefix + id));
+		return prepare(Q_FILTER , map);
+	}		
 	/**
 	 * Constructor
 	 * 

@@ -42,9 +42,9 @@ import org.eclipse.rdf4j.repository.Repository;
  * @author Bart.Hanssens
  */
 
-@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL, MediaType.TEXT_HTML})
+@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class CpsvResource extends RdfResource {
-	private final static String PREFIX = "http://pubserv.belgif.be/";
+	public final static String PREFIX = "http://pubserv.belgif.be/";
 
 	@GET
 	@Path("/cbe/{type: org|registration|site}/{id}")

@@ -42,9 +42,9 @@ import org.eclipse.rdf4j.repository.Repository;
  * @author Bart.Hanssens
  */
 @Path("/{type: statsect}")
-@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL, MediaType.TEXT_HTML})
+@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class GeoResource extends RdfResource {
-	private final static String PREFIX = "http://geo.belgif.be/";
+	public final static String PREFIX = "http://geo.belgif.be/";
 		
 	@GET
 	@Path("/{id}")
