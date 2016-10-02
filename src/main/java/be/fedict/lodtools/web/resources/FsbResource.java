@@ -39,6 +39,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.eclipse.rdf4j.model.Model;
@@ -48,16 +49,31 @@ import org.eclipse.rdf4j.repository.Repository;
  *
  * @author Bart.Hanssens
  */
-
+@Path("/fedict/fsb")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class FsbResource extends RdfResource {
 	public final static String PREFIX = "http://pubserv.belgif.be/";
+	public final static String FAMILY = "http://www.w3.org/ns/dcat#Dataset";
 
 	@GET
-	@Path("/fedict/fsb/{type: service|family}/{id}")
+	@Path("/{type: family|service}/{id}")
 	@ExceptionMetered
 	public Model getService(@PathParam("type") String type, @PathParam("id") String id) {
-		return getById(PREFIX, "fsb", id);
+		return getById(PREFIX, "fedict/fsb/" + type, id);
+	}
+	
+	@GET
+	@Path("/_search")
+	@ExceptionMetered
+	public Model searchOrganisation(@QueryParam("q") String text) {
+		return getFTS(text);
+	}
+	
+	@GET
+	@Path("/_filter")
+	@ExceptionMetered
+	public Model searchByFamily(@QueryParam("family") String text) {
+		return getFiltered(FAMILY, VocabResource.PREFIX, text + "#id");
 	}
 	
 /*

@@ -42,6 +42,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * @author Bart.Hanssens
  */
 
+@Path("/cpsv")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class CpsvResource extends RdfResource {
 	public final static String PREFIX = "http://pubserv.belgif.be/";

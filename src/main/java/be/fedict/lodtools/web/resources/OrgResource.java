@@ -57,16 +57,16 @@ public class OrgResource extends RdfResource {
 	}
 	
 	@GET
-	@Path("/{type: org|registration|site}/_search")
+	@Path("/_search")
 	@ExceptionMetered
-	public Model searchOrganisation(@PathParam("type") String type, @QueryParam("q") String text) {
+	public Model searchOrganisation(@QueryParam("q") String text) {
 		return getFTS(text);
 	}
 	
 	@GET
-	@Path("/{type: org|registration|site}/_filter")
+	@Path("/_filter")
 	@ExceptionMetered
-	public Model searchByNace(@PathParam("type") String type, @QueryParam("nace") String text) {
+	public Model searchByNace(@QueryParam("nace") String text) {
 		return getFiltered(ACTIVITY, VocabResource.PREFIX, text + "#id");
 	}
 	

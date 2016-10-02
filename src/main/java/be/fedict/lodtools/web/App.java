@@ -30,6 +30,7 @@ import be.fedict.lodtools.web.auth.UpdateAuth;
 import be.fedict.lodtools.web.health.RdfStoreHealthCheck;
 import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
 import be.fedict.lodtools.web.resources.CpsvResource;
+import be.fedict.lodtools.web.resources.FsbResource;
 import be.fedict.lodtools.web.resources.GeoResource;
 import be.fedict.lodtools.web.resources.OrgResource;
 import be.fedict.lodtools.web.resources.RdfResource;
@@ -107,6 +108,7 @@ public class App extends Application<AppConfig> {
 		// Repositories
 		Map<String,Class<RdfResource>> map = new HashMap() {{
 			put("CBE", OrgResource.class);
+			put("FSB", FsbResource.class);
 			put("GEO", GeoResource.class);
 			put("VOCAB", VocabResource.class);
 			put("CPSV", CpsvResource.class);
