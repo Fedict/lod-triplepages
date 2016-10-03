@@ -17,6 +17,33 @@ An HTTP client can ask for various  RDF 1.1 serializations, by setting the HTTP 
   * `text/turtle`: Turtle
   * `application/n-triples`: N-Triples
 
+## Available datasets
+
+These sets are not updated, there are no guarantees on availability and correctness.
+
+  * Crossroad Banks Enterprises
+  * NACEbel 2008 codes
+  * Fedict's FSB services 
+
+CBE examples
+```
+http://org.belgif.be/cbe/org/0367_302_178#id  (Fedict)
+http://org.belgif.be/cbe/_search?q=fed (Search for names starting with "Fed")
+http://org.belgif.be/cbe/_filter?nace=nace2008/84119 (organizations per Nace2008 code)
+```
+
+NACEbel example
+```
+http://vocab.belgif.be/nace2008/84111#id (Federal government)
+```
+
+FSB examples
+```
+http://pubserv.belgif.be/fedict/fsb/catalog#id (List of families)
+http://pubserv.belgif.be/fedict/fsb/family/S039-EnterpriseServices#id (Services of S039 family)
+http://pubserv.belgif.be/fedict/fsb/_search?q=KBO (Service for KBO)
+```
+
 ## Docker containers
 
 ### Front-end
