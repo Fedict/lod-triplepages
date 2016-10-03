@@ -56,10 +56,10 @@ public class FsbResource extends RdfResource {
 	public final static String FAMILY = "http://www.w3.org/ns/dcat#Dataset";
 
 	@GET
-	@Path("/catalog#id")
+	@Path("/catalog")
 	@ExceptionMetered
 	public Model getCatalog() {
-		return getById(PREFIX, "fedict/fsb/", "catalog");
+		return getById(PREFIX, "fedict/fsb", "catalog");
 	}
 	
 	@GET
