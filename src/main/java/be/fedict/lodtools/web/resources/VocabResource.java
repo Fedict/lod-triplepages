@@ -32,6 +32,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.repository.Repository;
@@ -50,6 +51,13 @@ public class VocabResource extends RdfResource {
 	@ExceptionMetered
 	public Model getVocab(@PathParam("type") String type, @PathParam("id") String id) {
 		return getById(PREFIX, type, id);
+	}
+		
+	@GET
+	@Path("/_search")
+	@ExceptionMetered
+	public Model searchOrganisation(@QueryParam("q") String text) {
+		return getFTS(text);
 	}
 	
 	public VocabResource(Repository repo) {
