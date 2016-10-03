@@ -21,9 +21,9 @@ An HTTP client can ask for various  RDF 1.1 serializations, by setting the HTTP 
 
 These sets are not updated, there are no guarantees on availability and correctness.
 
-  * Crossroad Banks Enterprises
-  * NACEbel 2008 codes
-  * Fedict's FSB services 
+  * Crossroad Banks Enterprises (see also [https://github.com/Fedict/lod-cbe/])
+  * NACEbel 2008 codes (see also [https://github.com/Fedict/lod-skosifier])
+  * Fedict's FSB services (based upon XML file)
 
 CBE examples
 ```
