@@ -32,6 +32,7 @@ import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
 import be.fedict.lodtools.web.resources.CpsvResource;
 import be.fedict.lodtools.web.resources.FsbResource;
 import be.fedict.lodtools.web.resources.GeoResource;
+import be.fedict.lodtools.web.resources.LinkResource;
 import be.fedict.lodtools.web.resources.OrgResource;
 import be.fedict.lodtools.web.resources.RdfResource;
 import be.fedict.lodtools.web.resources.VocabResource;
@@ -112,6 +113,7 @@ public class App extends Application<AppConfig> {
 			put("GEO", GeoResource.class);
 			put("VOCAB", VocabResource.class);
 			put("CPSV", CpsvResource.class);
+			put("LINK", LinkResource.class);
 		}};
 		
 		for(String name: map.keySet()) {

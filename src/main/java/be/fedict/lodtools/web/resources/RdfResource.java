@@ -110,14 +110,11 @@ public abstract class RdfResource {
 	 * @return 
 	 */
 	protected Model prepare(String qry, Map<String,Value> bindings) {
-		try {
-			RepositoryConnection conn = this.repo.getConnection();
+		try (RepositoryConnection conn = this.repo.getConnection()) {
 			GraphQuery gq = conn.prepareGraphQuery(QueryLanguage.SPARQL, qry);
 			bindings.forEach((k,v) -> gq.setBinding(k, v));
 
 			Model m = QueryResults.asModel(gq.evaluate());
-			conn.close();
-			
 			if (! m.isEmpty()) {
 				m.setNamespace(DCTERMS.PREFIX, DCTERMS.NAMESPACE);
 				m.setNamespace(FOAF.PREFIX, FOAF.NAMESPACE);
@@ -140,11 +137,20 @@ public abstract class RdfResource {
 	 * @return RDF model 
 	 */
 	protected Model getById(String prefix, String type, String id) {
-		Map<String,Value> map = new HashMap();
-		map.put("s", asURI(prefix + type + "/" + id + "#id"));
-		return prepare(Q_IRI, map);
+		return getById(prefix + type + "/" + id + "#id");
 	}
 	
+	/**
+	 * Get by ID (URI)
+	 * 
+	 * @param url
+	 * @return RDF model 
+	 */
+	protected Model getById(String url) {
+		Map<String,Value> map = new HashMap();
+		map.put("s", asURI(url));
+		return prepare(Q_IRI, map);		
+	}
 	/**
 	 * Full text search
 	 * 
@@ -170,7 +176,22 @@ public abstract class RdfResource {
 		map.put("filter", asURI(prop));
 		map.put("val", asURI(prefix + id));
 		return prepare(Q_FILTER , map);
-	}		
+	}
+	
+	
+	/**
+	 * Put statements in the store
+	 * 
+	 * @param m 
+	 */
+	protected void putStatements(Model m) {
+		try (RepositoryConnection conn = this.repo.getConnection()) {
+			conn.add(m);
+		} catch (RepositoryException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+	
 	/**
 	 * Constructor
 	 * 

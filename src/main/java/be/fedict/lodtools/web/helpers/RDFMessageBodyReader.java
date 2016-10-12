@@ -26,17 +26,16 @@
 package be.fedict.lodtools.web.helpers;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-
-import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.MessageBodyWriter;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import org.eclipse.rdf4j.model.Model;
@@ -50,34 +49,32 @@ import org.eclipse.rdf4j.rio.Rio;
  * @author Bart.Hanssens
  */
 @Provider
-@Produces({RDFMediaType.JSONLD + ";charset=utf-8", 
+@Consumes({RDFMediaType.JSONLD + ";charset=utf-8", 
 			RDFMediaType.NTRIPLES + ";charset=utf-8", 
 			RDFMediaType.TTL + ";charset=utf-8"})
-public class RDFMessageBodyWriter implements MessageBodyWriter<Model> {
+public class RDFMessageBodyReader implements MessageBodyReader<Model> {
+	private final static String BASE = "http://www.fedict.be"; // TODO
+	
 	@Override
-	public boolean isWriteable(Class<?> type, Type generic, Annotation[] antns, MediaType mt) {
+	public boolean isReadable(Class<?> type, Type generic, Annotation[] antns, MediaType mt) {
 		return generic == Model.class;
 	}
 
 	@Override
-	public long getSize(Model m, Class<?> type, Type generic, Annotation[] antns, MediaType mt) {
-		return 0; // ignored by Jersey 2.0 anyway
-	}
-
-	@Override
-	public void writeTo(Model m, Class<?> type, Type generic, Annotation[] antns, MediaType mt, 
-										MultivaluedMap<String, Object> mm, OutputStream out) 
-									throws IOException, WebApplicationException {
-		if (m.isEmpty()) {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
+	public Model readFrom(Class<Model> type, Type generic, Annotation[] antns, MediaType mt, 
+									MultivaluedMap<String, String> mm, InputStream in) 
+							throws IOException, WebApplicationException {
 		
 		RDFFormat fmt = RDFMediaType.getRDFFormat(mt);
-		
+		Model m;
 		try {
-			Rio.write(m, out, fmt);
+			m = Rio.parse(in, BASE, fmt);
 		} catch (RDFHandlerException ex) {
 			throw new WebApplicationException(ex);
 		}
+		if (m.isEmpty()) {
+			throw new WebApplicationException(Response.Status.NO_CONTENT);
+		}
+		return m;
 	}
 }

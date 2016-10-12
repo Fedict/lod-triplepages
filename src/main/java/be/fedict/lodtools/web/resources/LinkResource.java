@@ -23,36 +23,61 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package be.fedict.lodtools.web.helpers;
+package be.fedict.lodtools.web.resources;
 
-import javax.ws.rs.core.MediaType;
-import org.eclipse.rdf4j.rio.RDFFormat;
+import be.fedict.lodtools.web.helpers.RDFMediaType;
+import com.codahale.metrics.annotation.ExceptionMetered;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.Consumes;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.repository.Repository;
 
 /**
- * Helper class for RDF serialization types
- * 
+ *
  * @author Bart.Hanssens
  */
-public class RDFMediaType {
-	// can't use RDFFormat.xyz.toString(): not constant
-	public final static String JSONLD = "application/ld+json";
-	public final static String NTRIPLES = "application/n-triples";
-	public final static String TTL = "text/turtle";
+
+@Path("/link")
+@Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
+public class LinkResource extends RdfResource {
+	public final static String PREFIX = "http://pubserv.belgif.be/";
+
+	@GET
+	@ExceptionMetered
+	public Model getLink(@QueryParam("url") String url) {
+		return getById(url);
+	}
 	
-	/**
-	 * Get RDF Format from mediatype
-	 * 
-	 * @param mt Jersey media type
-	 * @return RDF4J rdf format 
-	 */
-	public static RDFFormat getRDFFormat(MediaType mt) {
-		RDFFormat fmt;
-		
-		switch(mt.toString()) {
-			case RDFMediaType.NTRIPLES: fmt = RDFFormat.NTRIPLES; break;
-			case RDFMediaType.TTL: fmt = RDFFormat.TURTLE; break;
-			default: fmt = RDFFormat.JSONLD; break;
-		}
-		return fmt;
+	@PermitAll
+	@PUT
+	@Consumes({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
+	@ExceptionMetered
+	public void putLink(Model m) {
+		putStatements(m);
+	}
+	
+	@GET
+	@Path("/_search")
+	@ExceptionMetered
+	public Model searchLink(@QueryParam("q") String text) {
+		return getFTS(text);
+	}
+/*	
+	@GET
+	@Path("/_filter")
+	@ExceptionMetered
+	public Model searchBy(@QueryParam("family") String text) {
+		//return getFiltered(FAMILY, VocabResource.PREFIX, text + "#id");
+	}
+*/	
+	public LinkResource(Repository repo) {
+		super(repo);
 	}
 }
