@@ -21,8 +21,8 @@ http://pubserv.belgif.be/link?url=
 
 ## Filtering link(s) (GET)
 
-Currently only the [Data Theme list](http://publications.europa.eu/mdr/resource/authority/data-theme/html/data-theme-eng.html]
-list published by EU Publication Office is supported.
+Currently only the [Data Theme list](http://publications.europa.eu/mdr/resource/authority/data-theme/html/data-theme-eng.html)
+published by EU Publication Office is supported.
 ```
 http://pubserv.belgif.be/link/_filter?theme=TECH
 ```
