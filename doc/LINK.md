@@ -19,6 +19,14 @@ The value of the `url` parameter must be URL-encoded.
 http://pubserv.belgif.be/link?url=
 ```
 
+## Filtering link(s) (GET)
+
+Currently only the [http://publications.europa.eu/mdr/resource/authority/data-theme/html/data-theme-eng.html](Data Theme) 
+list published by EU Publication Office is supported.
+```
+http://pubserv.belgif.be/link/_filter?theme=TECH
+```
+
 ## Adding information about a link (PUT)
 
 Requires HTTP basic authentication.
