@@ -4,51 +4,28 @@ Simple front-end for RDF triplestore / Linked Open Data PoC's.
 
 ## Description
 
-A typical setup consists of two dockerized services, the front-end and a triplestore.
+A typical setup consists of two Docker-ized services: the front-end and a triplestore.
 Data and configuration is stored on a docker volume
 (otherwise the data is lost when the docker containers get terminated / rebooted)
 
 
-## Content-negotiation
-
-An HTTP client can ask for various  RDF 1.1 serializations, by setting the HTTP `Accept` header
-
-  * `application/ld+json`: JSON-LD
-  * `text/turtle`: Turtle
-  * `application/n-triples`: N-Triples
 
 ## Available datasets
 
 These sets are not updated, there are no guarantees on availability and correctness.
 
-  * Crossroad Banks Enterprises (see also [https://github.com/Fedict/lod-cbe/])
-  * NACEbel 2008 codes (see also [https://github.com/Fedict/lod-skosifier])
-  * Fedict's FSB services (based upon XML file)
+  * [Crossroad Banks Enterprises](doc/CBE_NACEBEL.md)
+  * [NACEbel 2008 codes](doc/CBE_NACEBEL.md) 
+  * [Fedict's FSB services](doc/FSB.md) 
+  * Demo link store for WCMS
 
-CBE examples
-```
-http://org.belgif.be/cbe/org/0367_302_178#id  (Fedict)
-http://org.belgif.be/cbe/_search?q=fed (Search for names starting with "Fed")
-http://org.belgif.be/cbe/_filter?nace=nace2008/84119 (organizations per Nace2008 code)
-```
 
-NACEbel example
-```
-http://vocab.belgif.be/nace2008/84111#id (Federal government)
-```
-
-FSB examples
-```
-http://pubserv.belgif.be/fedict/fsb/catalog#id (List of families)
-http://pubserv.belgif.be/fedict/fsb/family/S039-EnterpriseServices#id (Services of S039 family)
-http://pubserv.belgif.be/fedict/fsb/_search?q=KBO (Service for KBO)
-```
 
 ## Docker containers
 
 ### Front-end
 
-A custom dropwizard application, the default dropwizard port (8080) is forwarded to port 80 (HTTP)
+A custom Dropwizard application, the default Dropwizard port (8080) is forwarded to port 80 (HTTP)
 
 ```
 docker run --name dw -p 80:8080 -d 
