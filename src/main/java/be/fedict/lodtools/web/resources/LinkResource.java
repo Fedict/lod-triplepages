@@ -49,7 +49,8 @@ import org.eclipse.rdf4j.repository.Repository;
 @Path("/link")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class LinkResource extends RdfResource {
-	public final static String PREFIX = "http://pubserv.belgif.be/";
+	public final static String THEME = "http://www.w3.org/ns/dcat#theme";
+	public final static String PREFIX = "http://publications.europa.eu/resource/authority/data-theme/";
 
 	@GET
 	@ExceptionMetered
@@ -80,14 +81,14 @@ public class LinkResource extends RdfResource {
 	public Model searchLink(@QueryParam("q") String text) {
 		return getFTS(text);
 	}
-/*	
+
 	@GET
 	@Path("/_filter")
 	@ExceptionMetered
-	public Model searchBy(@QueryParam("family") String text) {
-		//return getFiltered(FAMILY, VocabResource.PREFIX, text + "#id");
+	public Model searchBy(@QueryParam("theme") String text) {
+		return getFiltered(THEME, PREFIX, text);
 	}
-*/	
+
 	public LinkResource(Repository repo) {
 		super(repo);
 	}
