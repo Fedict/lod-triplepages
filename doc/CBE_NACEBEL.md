@@ -14,7 +14,8 @@ All requests are HTTP GET request.
 
 Based upon the [open data CSV files](https://kbopub.economie.fgov.be/kbo-open-data/login?lang=en) 
 published by the FPS Economy.
-See also the conversion tool [https://github.com/Fedict/lod-cbe/]
+
+See also the conversion tool (https://github.com/Fedict/lod-cbe/)
 
 ```
 http://org.belgif.be/cbe/org/0367_302_178#id  (Fedict)
@@ -28,7 +29,8 @@ The following vocabularies are used https://www.w3.org/TR/vocab-regorg/
 
 Based upon the [Excel file](http://statbel.fgov.be/nl/statistieken/gegevensinzameling/nomenclaturen/nacebel/) 
 published by FPS Economy / Statbel.
-See also the conversion tool [https://github.com/Fedict/lod-skosifier]
+
+See also the conversion tool (https://github.com/Fedict/lod-skosifier)
 
 ```
 http://vocab.belgif.be/nace2008/84111#id (Federal government)
