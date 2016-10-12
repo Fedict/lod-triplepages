@@ -28,6 +28,7 @@ package be.fedict.lodtools.web;
 import be.fedict.lodtools.web.auth.DummyUser;
 import be.fedict.lodtools.web.auth.UpdateAuth;
 import be.fedict.lodtools.web.health.RdfStoreHealthCheck;
+import be.fedict.lodtools.web.helpers.RDFMessageBodyReader;
 import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
 import be.fedict.lodtools.web.resources.CpsvResource;
 import be.fedict.lodtools.web.resources.FsbResource;
@@ -85,6 +86,7 @@ public class App extends Application<AppConfig> {
 		
 		// RDF Serialization formats
 		env.jersey().register(new RDFMessageBodyWriter());
+		env.jersey().register(new RDFMessageBodyReader());
 		//env.jersey().register(new HTMLMessageBodyWriter());
 		
 		// Managed resource
