@@ -28,8 +28,9 @@ package be.fedict.lodtools.web.resources;
 import be.fedict.lodtools.web.helpers.RDFMediaType;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.Consumes;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -62,6 +63,14 @@ public class LinkResource extends RdfResource {
 	@ExceptionMetered
 	public Response putLink(Model m) {
 		putStatements(m);
+		return Response.ok().build();
+	}
+	
+	@PermitAll
+	@DELETE
+	@ExceptionMetered
+	public Response deleteLink(@QueryParam("url") String text) {
+		deleteStatements(text);
 		return Response.ok().build();
 	}
 	

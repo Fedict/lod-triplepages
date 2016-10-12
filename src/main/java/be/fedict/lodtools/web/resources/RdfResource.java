@@ -32,7 +32,6 @@ import java.util.Map;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
 
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Model;
@@ -72,9 +71,9 @@ public abstract class RdfResource {
 	private final static String Q_FTS = 
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
 			+ "PREFIX luc: <http://www.ontotext.com/owlim/lucene#> "
-			+ "CONSTRUCT { ?s rdfs:label ?o } WHERE { "
-			+ "?o luc:myIndex ?fts . "
-			+ "?s ?p ?o } "
+			+ "CONSTRUCT { ?s rdfs:label ?o }  "
+			+ "WHERE { ?o luc:myIndex ?fts . "
+			+		"?s ?p ?o } "
 			+ "LIMIT 200";
 	
 	private final static String Q_FILTER =
@@ -187,6 +186,19 @@ public abstract class RdfResource {
 	protected void putStatements(Model m) {
 		try (RepositoryConnection conn = this.repo.getConnection()) {
 			conn.add(m);
+		} catch (RepositoryException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+	
+	/**
+	 * Delete all triples for subject URL
+	 * 
+	 * @param url subject to delete
+	 */
+	protected void deleteStatements(String url) {
+		try (RepositoryConnection conn = this.repo.getConnection()) {
+			conn.remove(fac.createIRI(url), null, null);
 		} catch (RepositoryException e) {
 			throw new WebApplicationException(e);
 		}
