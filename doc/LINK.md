@@ -1,5 +1,24 @@
 # Link store
 
+This is an example implementation for store links (and metadata) into the triple store.
+
+## Format / structure
+
+The structure is extremely simple:
+
+    * the link is used as identifier (RDF subject)
+    * links can have a `rdfs:label` in multiple languages
+    * the `dcat:theme` property is used to categorize the links
+
+And example in Turtle looks like:
+
+```
+@prefix rdfs:
+@prefix dcat:
+@prefix theme:
+```
+
+
 ## Content-negotiation
 
 An HTTP client can use various  RDF 1.1 serializations.
@@ -13,6 +32,8 @@ For PUT requests, the HTTP `Content-Type` header must be set, and UTF-8 encoding
   * `application/n-triples`: N-Triples
 
 ## Retrieving all info about a link (GET)
+
+For the time being, the pubserv subdomain is used, this will change in the future.
 
 The value of the `url` parameter must be URL-encoded.
 ```
