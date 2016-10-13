@@ -17,7 +17,7 @@ These sets are not updated, there are no guarantees on availability and correctn
   * [Crossroad Banks Enterprises](doc/CBE_NACEBEL.md)
   * [NACEbel 2008 codes](doc/CBE_NACEBEL.md) 
   * [Fedict's FSB services](doc/FSB.md) 
-  * Demo link store for WCMS
+  * [Demo link store for WCMS](docn/LINK.md)
 
 
 
