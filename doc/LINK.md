@@ -5,9 +5,10 @@ This is an example implementation for store links (and metadata) into the triple
 ## Format / structure
 
 The structure is extremely simple:
-    * the link is used as identifier (RDF subject)
-    * links can have a `rdfs:label` in multiple languages
-    * the `dcat:theme` property is used to categorize the links
+
+ * the link is used as identifier (RDF subject)
+ * links can have a `rdfs:label` in multiple languages
+ * the `dcat:theme` property is used to categorize the links
 
 
 An example in Turtle looks like:
