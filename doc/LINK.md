@@ -10,8 +10,8 @@ The structure is extremely simple:
     * links can have a `rdfs:label` in multiple languages
     * the `dcat:theme` property is used to categorize the links
 
-And example in Turtle looks like:
 
+An example in Turtle looks like:
 ```
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
@@ -72,7 +72,7 @@ Assuming the username is `user` and the password `pass`,
 all information about the link `http://www.fedict.be` can be deleted using the following command:
 
 ```
-curl --request DELETE -v http://sandman:enter@localhost:8080/link?url=http%3A//www.fedict.be
+curl --request DELETE -v http://sandman:enter@localhost:8080/link?url=http://www.fedict.be
 ```
 Note: the value of the `url` parameter must be URL-encoded.
 
