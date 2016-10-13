@@ -13,9 +13,15 @@ The structure is extremely simple:
 And example in Turtle looks like:
 
 ```
-@prefix rdfs:
-@prefix dcat:
-@prefix theme:
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix mdr: <http://publications.europa.eu/resource/authority/data-theme/> .
+
+<http://www.fedict.be> rdfs:label "Website van Fedict"@nl, "Site web de Fedict"@fr, "Fedict web site"@en ;
+	dcat:theme mdr:TECH .
+
+<http://www.statbel.be> rdfs:label "Website van Statbel"@nl, "Site web de Statbel"@fr, "Statbel web site"@en ;
+	dcat:theme mdr:ECON .
 ```
 
 
@@ -34,27 +40,39 @@ For PUT requests, the HTTP `Content-Type` header must be set, and UTF-8 encoding
 ## Retrieving all info about a link (GET)
 
 For the time being, the pubserv subdomain is used, this will change in the future.
-
-The value of the `url` parameter must be URL-encoded.
 ```
-http://pubserv.belgif.be/link?url=
+http://pubserv.belgif.be/link?url=http://www.fedict.be
 ```
+Note: the value of the `url` parameter should be URL-encoded.
 
 ## Filtering link(s) (GET)
 
 Currently only the [Data Theme list](http://publications.europa.eu/mdr/resource/authority/data-theme/html/data-theme-eng.html)
 published by EU Publication Office is supported.
 ```
-http://pubserv.belgif.be/link/_filter?theme=TECH
+http://pubserv.belgif.be/link/_filter?theme=TECH (al technology-related links)
 ```
 
 ## Adding information about a link (PUT)
 
-Requires HTTP basic authentication.
+This requires HTTP basic authentication (i.e. a username and password)
+
+Assuming the username is `user` and the password `pass`, the previously mentioned
+file can be uploaded using curl (or any other HTTP-tool) using the following command: 
+```
+curl -v -T test.ttl -H "Content-Type: text/turtle" --basic http://user:pass@pubserv.belgif.be/link
+```
+
 
 ## Removing a link (DELETE)
 
-Requires HTTP basic authentication.
+This requires HTTP basic authentication (i.e. a username and password)
 
+Assuming the username is `user` and the password `pass`, 
+all information about the link `http://www.fedict.be` can be deleted using the following command:
 
+```
+curl --request DELETE -v http://sandman:enter@localhost:8080/link?url=http%3A//www.fedict.be
+```
+Note: the value of the `url` parameter must be URL-encoded.
 

@@ -8,8 +8,6 @@ A typical setup consists of two Docker-ized services: the front-end and a triple
 Data and configuration is stored on a docker volume
 (otherwise the data is lost when the docker containers get terminated / rebooted)
 
-
-
 ## Available datasets
 
 These sets are not updated, there are no guarantees on availability and correctness.
