@@ -41,7 +41,7 @@ For PUT requests, the HTTP `Content-Type` header must be set, and UTF-8 encoding
 
 For the time being, the pubserv subdomain is used, this will change in the future.
 ```
-http://pubserv.belgif.be/link?url=http://www.fedict.be
+http://link.belgif.be/link?url=http://www.fedict.be
 ```
 Note: the value of the `url` parameter should be URL-encoded.
 
@@ -50,7 +50,7 @@ Note: the value of the `url` parameter should be URL-encoded.
 Currently only the [Data Theme list](http://publications.europa.eu/mdr/resource/authority/data-theme/html/data-theme-eng.html)
 published by EU Publication Office is supported.
 ```
-http://pubserv.belgif.be/link/_filter?theme=TECH (al technology-related links)
+http://link.belgif.be/link/_filter?theme=TECH (al technology-related links)
 ```
 
 ## Adding information about a link (PUT)
@@ -60,7 +60,7 @@ This requires HTTP basic authentication (i.e. a username and password)
 Assuming the username is `user` and the password `pass`, the previously mentioned
 file can be uploaded using curl (or any other HTTP-tool) using the following command: 
 ```
-curl -v -T test.ttl -H "Content-Type: text/turtle" --basic http://user:pass@pubserv.belgif.be/link
+curl -v -T test.ttl -H "Content-Type: text/turtle" --basic http://user:pass@link.belgif.be/link
 ```
 
 
@@ -72,7 +72,7 @@ Assuming the username is `user` and the password `pass`,
 all information about the link `http://www.fedict.be` can be deleted using the following command:
 
 ```
-curl --request DELETE -v http://user:pass@localhost:8080/link?url=http://www.fedict.be
+curl --request DELETE -v http://user:pass@link.belgif.be/link?url=http://www.fedict.be
 ```
 Note: the value of the `url` parameter must be URL-encoded.
 
