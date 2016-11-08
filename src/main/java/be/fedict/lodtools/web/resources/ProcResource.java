@@ -55,8 +55,8 @@ public class ProcResource extends RdfResource {
 	@GET
 	@Path("/contract/{id}")
 	@ExceptionMetered
-	public Model getContract(@PathParam("type") String type, @PathParam("id") String id) {
-		return getById(PREFIX, type, id);
+	public Model getContract(@PathParam("id") String id) {
+		return getById(PREFIX, "contract", id);
 	}
 	
 	@PermitAll
