@@ -48,7 +48,7 @@ logging:
 
 ### RDF Triple Store
 
-This can be a GraphDB triple store, or another store supporting Sesame / RDF4j.
+This can be a [GraphDB](doc/GRAPHDB.md) triple store, or another store supporting Sesame / RDF4j.
 Optionally, the default workbench port (7200) can be forwarded to port 443
 
 ```
