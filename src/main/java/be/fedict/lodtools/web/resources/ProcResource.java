@@ -47,7 +47,7 @@ import org.eclipse.rdf4j.repository.Repository;
  *
  * @author Bart.Hanssens
  */
-@Path("/fedict")
+@Path("/proc/contract")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class ProcResource extends RdfResource {
 	public final static String PREFIX = "http://form.belgif.be/proc";
