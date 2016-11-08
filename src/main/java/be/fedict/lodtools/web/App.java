@@ -32,9 +32,11 @@ import be.fedict.lodtools.web.helpers.RDFMessageBodyReader;
 import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
 import be.fedict.lodtools.web.resources.CpsvResource;
 import be.fedict.lodtools.web.resources.FsbResource;
+import be.fedict.lodtools.web.resources.IwfResource;
 import be.fedict.lodtools.web.resources.GeoResource;
 import be.fedict.lodtools.web.resources.LinkResource;
 import be.fedict.lodtools.web.resources.OrgResource;
+import be.fedict.lodtools.web.resources.ProcResource;
 import be.fedict.lodtools.web.resources.RdfResource;
 import be.fedict.lodtools.web.resources.VocabResource;
 
@@ -51,8 +53,6 @@ import javax.ws.rs.WebApplicationException;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.manager.RemoteRepositoryManager;
 import org.eclipse.rdf4j.repository.manager.RepositoryProvider;
-import org.glassfish.hk2.utilities.reflection.Logger;
-
 
 /**
  * Main Dropwizard web application
@@ -116,6 +116,7 @@ public class App extends Application<AppConfig> {
 			put("VOCAB", VocabResource.class);
 			put("CPSV", CpsvResource.class);
 			put("LINK", LinkResource.class);
+			put("IWF", ProcResource.class);
 		}};
 		
 		for(String name: map.keySet()) {

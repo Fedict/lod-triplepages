@@ -48,7 +48,7 @@
 	    </plugin>
 	</plugins>
     </build>
-    <name>lod-triplepages</name>
+    <name>Triple Pages front-end</name>
     <description>Simple front-end for RDF triple store</description>
     <dependencies>
         <dependency>
