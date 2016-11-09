@@ -28,10 +28,11 @@ package be.fedict.lodtools.web.resources;
 import be.fedict.lodtools.web.helpers.RDFMediaType;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
+
 import javax.annotation.security.PermitAll;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -41,6 +42,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.repository.Repository;
 
 /**
@@ -50,8 +52,15 @@ import org.eclipse.rdf4j.repository.Repository;
 @Path("/proc")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class ProcResource extends RdfResource {
-	public final static String PREFIX = "http://form.belgif.be/proc";
+	public final static String PREFIX = "http://form.belgif.be/proc/";
 
+	@GET
+	@Path("/contract")
+	@ExceptionMetered
+	public Model getContracts() {
+		return getFiltered(RDF.TYPE.toString(), "http://dbpedia.org/resource/", "Contract");
+	}
+	
 	@GET
 	@Path("/contract/{id}")
 	@ExceptionMetered
