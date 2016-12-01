@@ -24,7 +24,7 @@ These sets are not updated, there are no guarantees on availability and correctn
 
 ### Front-end
 
-A custom Dropwizard application, the default Dropwizard port (8080) is forwarded to port 80 (HTTP)
+A custom [Dropwizard](http://www.dropwizard.io/) application, the default Dropwizard port (8080) is forwarded to port 80 (HTTP)
 
 ```
 docker run --name dw -p 80:8080 -d 

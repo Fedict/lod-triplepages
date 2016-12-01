@@ -2,6 +2,8 @@
 
 Based upon a manually created Excel file listing Fedict's framework contracts.
 
+See also the conversion tool (https://github.com/Fedict/lod-proc/)
+
 ## Content-negotiation
 
 An HTTP client can ask for various  RDF 1.1 serializations, by setting the HTTP `Accept` header.
