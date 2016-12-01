@@ -1,4 +1,4 @@
-# CBE and NACEbel
+# CBE, Company types and NACEbel
 
 Based upon the [open data CSV files](https://kbopub.economie.fgov.be/kbo-open-data/login?lang=en) 
 and the [Excel file](http://statbel.fgov.be/nl/statistieken/gegevensinzameling/nomenclaturen/nacebel/) 
