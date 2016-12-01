@@ -29,6 +29,7 @@ import be.fedict.lodtools.web.helpers.RDFMediaType;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -66,7 +67,8 @@ public abstract class RdfResource {
 	private final ValueFactory fac;
 	
 	private final static String Q_IRI = 
-			"CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }";
+			"CONSTRUCT { ?s ?p ?o }"
+			+ " WHERE { ?s ?p ?o }";
 	
 	private final static String Q_FTS = 
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
@@ -74,7 +76,7 @@ public abstract class RdfResource {
 			+ "CONSTRUCT { ?s rdfs:label ?o }  "
 			+ "WHERE { ?o luc:myIndex ?fts . "
 			+		"?s ?p ?o } "
-			+ "LIMIT 200";
+			+ "LIMIT 400";
 	
 	private final static String Q_FILTER =
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
@@ -112,7 +114,7 @@ public abstract class RdfResource {
 		try (RepositoryConnection conn = this.repo.getConnection()) {
 			GraphQuery gq = conn.prepareGraphQuery(QueryLanguage.SPARQL, qry);
 			bindings.forEach((k,v) -> gq.setBinding(k, v));
-
+			
 			Model m = QueryResults.asModel(gq.evaluate());
 			if (! m.isEmpty()) {
 				m.setNamespace(DCTERMS.PREFIX, DCTERMS.NAMESPACE);
@@ -150,6 +152,7 @@ public abstract class RdfResource {
 		map.put("s", asURI(url));
 		return prepare(Q_IRI, map);		
 	}
+	
 	/**
 	 * Full text search
 	 * 
@@ -157,9 +160,24 @@ public abstract class RdfResource {
 	 * @return RDF model 
 	 */
 	protected Model getFTS(String text) {
+		return getFTS(text, null);
+	}
+
+	/**
+	 * Full text search
+	 * 
+	 * @param text text to search for
+	 * @param from named graph
+	 * @return RDF model 
+	 */
+	protected Model getFTS(String text, String from) {
+		String qry = Q_FTS;
 		Map<String,Value> map = new HashMap();
 		map.put("fts", asLiteral(text + "*"));
-		return prepare(Q_FTS, map);
+		if (from != null) {
+			qry = qry.replaceFirst("WHERE", "FROM <" + from + "> WHERE");
+		}
+		return prepare(qry, map);
 	}
 	
 	/**
@@ -171,10 +189,27 @@ public abstract class RdfResource {
 	 * @return RDF model
 	 */
 	protected Model getFiltered(String prop, String prefix, String id) {
+		return getFiltered(prop, prefix, id, null);
+	}
+	
+	/**
+	 * Filter on property
+	 * 
+	 * @param prop property URI as string
+	 * @param prefix value prefix
+	 * @param id value id
+	 * @param from named graph
+	 * @return RDF model
+	 */
+	protected Model getFiltered(String prop, String prefix, String id, String from) {
+		String qry = Q_FILTER;
 		Map<String,Value> map = new HashMap();
 		map.put("filter", asURI(prop));
 		map.put("val", asURI(prefix + id));
-		return prepare(Q_FILTER , map);
+		if (from != null) {
+			qry = qry.replaceFirst("WHERE", "FROM <" + from + "> WHERE");
+		}
+		return prepare(qry , map);
 	}
 	
 	

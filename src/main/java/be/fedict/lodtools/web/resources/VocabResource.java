@@ -41,7 +41,7 @@ import org.eclipse.rdf4j.repository.Repository;
  *
  * @author Bart.Hanssens
  */
-@Path("/{type: nace2003|nace2008|nis2008}")
+@Path("/{type: nace2008|orgtype}")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class VocabResource extends RdfResource {
 	public final static String PREFIX = "http://vocab.belgif.be/";
@@ -56,8 +56,8 @@ public class VocabResource extends RdfResource {
 	@GET
 	@Path("/_search")
 	@ExceptionMetered
-	public Model searchOrganisation(@QueryParam("q") String text) {
-		return getFTS(text);
+	public Model search(@PathParam("type") String type, @QueryParam("q") String text) {
+		return getFTS(text, PREFIX + "graph/" + type);
 	}
 	
 	public VocabResource(Repository repo) {
