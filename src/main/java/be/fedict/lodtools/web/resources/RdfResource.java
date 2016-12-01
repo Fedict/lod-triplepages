@@ -147,9 +147,16 @@ public abstract class RdfResource {
 	
 	/**
 	 * Get all triples
+	 * 
+	 * @param from named graph
+	 * @return all triples in a graph
 	 */
-	protected Model getAll() {
-		return prepare(Q_IRI, Collections.EMPTY_MAP);
+	protected Model getAll(String from) {
+		String qry = Q_IRI;
+		if (from != null) {
+			qry = qry.replaceFirst("WHERE", "FROM <" + from + "> WHERE");
+		}
+		return prepare(qry, Collections.EMPTY_MAP);
 	}
 	
 	/**

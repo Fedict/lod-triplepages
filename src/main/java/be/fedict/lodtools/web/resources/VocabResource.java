@@ -48,12 +48,14 @@ import org.eclipse.rdf4j.repository.Repository;
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class VocabResource extends RdfResource {
 	public final static String PREFIX = "http://vocab.belgif.be/";
+	private final static String PREF_GRAPH = "http://vocab.belgif.be/graph/";
+	
 	
 	@GET
 	@Path("/")
 	@ExceptionMetered
-	public Model getVocab() {
-		return getAll();
+	public Model getVocab(@PathParam("type") String type) {
+		return getAll(PREF_GRAPH + type);
 	}
 	
 	@GET
@@ -67,7 +69,7 @@ public class VocabResource extends RdfResource {
 	@Path("/_search")
 	@ExceptionMetered
 	public Model search(@PathParam("type") String type, @QueryParam("q") String text) {
-		return getFTS(text, PREFIX + "graph/" + type);
+		return getFTS(text, PREF_GRAPH + type);
 	}
 	
 	public VocabResource(Repository repo) {
