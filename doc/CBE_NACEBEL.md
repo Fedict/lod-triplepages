@@ -30,7 +30,7 @@ http://org.belgif.be/cbe/_filter?nace=nace2008/84119 (organizations per Nace2008
 ```
 http://vocab.belgif.be/orgtype/ (All company types)
 http://vocab.belgif.be/orgtype/CBE301#id (Federal public service)
-http://vocab.belgif.be/orgtype/_search?q=Dienst (Search for company types with "Dienst")
+http://vocab.belgif.be/orgtype/_search?q=Dienst (Search for company type names starting with "Dienst")
 ```
 
 
@@ -39,5 +39,6 @@ http://vocab.belgif.be/orgtype/_search?q=Dienst (Search for company types with "
 ```
 http://vocab.belgif.be/nace2008/ (All NACEbel codes)
 http://vocab.belgif.be/nace2008/84111#id (Federal government)
+http://vocab.belgif.be/nace2008/_search?q=Dienst (Search for NACE names starting with "Dienst")
 ```
 
