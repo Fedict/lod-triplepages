@@ -35,21 +35,31 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.SKOS;
 import org.eclipse.rdf4j.repository.Repository;
 
 /**
- *
+ * Storage for controlled vocabularies
+ * 
  * @author Bart.Hanssens
  */
 @Path("/{type: nace2008|orgtype}")
 @Produces({RDFMediaType.JSONLD, RDFMediaType.NTRIPLES, RDFMediaType.TTL})
 public class VocabResource extends RdfResource {
 	public final static String PREFIX = "http://vocab.belgif.be/";
-		
+	
+	@GET
+	@Path("/")
+	@ExceptionMetered
+	public Model getVocab() {
+		return getAll();
+	}
+	
 	@GET
 	@Path("/{id}")
 	@ExceptionMetered
-	public Model getVocab(@PathParam("type") String type, @PathParam("id") String id) {
+	public Model getVocabTerm(@PathParam("type") String type, @PathParam("id") String id) {
 		return getById(PREFIX, type, id);
 	}
 		

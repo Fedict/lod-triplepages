@@ -30,7 +30,6 @@ import java.util.Collections;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -77,7 +76,7 @@ public abstract class RdfResource {
 			+ "CONSTRUCT { ?s rdfs:label ?o }  "
 			+ "WHERE { ?o luc:myIndex ?fts . "
 			+		"?s ?p ?o } "
-			+ "LIMIT 400";
+			+ "LIMIT 1000";
 	
 	private final static String Q_FILTER =
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
@@ -144,6 +143,13 @@ public abstract class RdfResource {
 	 */
 	protected Model getById(String prefix, String type, String id) {
 		return getById(prefix + type + "/" + id + "#id");
+	}
+	
+	/**
+	 * Get all triples
+	 */
+	protected Model getAll() {
+		return prepare(Q_IRI, Collections.EMPTY_MAP);
 	}
 	
 	/**

@@ -43,7 +43,8 @@ import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.repository.Repository;
 
 /**
- *
+ * Storage for link metadata
+ * 
  * @author Bart.Hanssens
  */
 

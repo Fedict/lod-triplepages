@@ -47,7 +47,8 @@ import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.repository.Repository;
 
 /**
- *
+ * Storage for procurement contracts
+ * 
  * @author Bart.Hanssens
  */
 @Path("/proc")
@@ -96,7 +97,7 @@ public class ProcResource extends RdfResource {
 	}
 	
 	@GET
-	@Path("/contract/_search")
+	@Path("/_search")
 	@ExceptionMetered
 	public Model searchOrganisation(@QueryParam("q") String text) {
 		return getFTS(text);
