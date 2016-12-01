@@ -27,6 +27,7 @@ package be.fedict.lodtools.web.resources;
 
 import be.fedict.lodtools.web.helpers.RDFMediaType;
 import com.codahale.metrics.annotation.ExceptionMetered;
+import io.dropwizard.jersey.PATCH;
 import javax.annotation.security.PermitAll;
 
 import javax.ws.rs.Consumes;
@@ -73,6 +74,14 @@ public class LinkResource extends RdfResource {
 	public Response deleteLink(@QueryParam("url") String text) {
 		deleteStatements(text);
 		return Response.ok().build();
+	}
+
+	@PermitAll
+	@PATCH
+	@Path("/_reindex")
+	public Response reindex() {
+		incrementFTS();
+		return Response.ok().build();		
 	}
 	
 	@GET

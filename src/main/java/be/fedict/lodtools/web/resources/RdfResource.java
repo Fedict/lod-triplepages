@@ -26,6 +26,7 @@
 package be.fedict.lodtools.web.resources;
 
 import be.fedict.lodtools.web.helpers.RDFMediaType;
+import java.util.Collections;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +84,10 @@ public abstract class RdfResource {
 			+ "CONSTRUCT { ?s rdfs:label ?o } "
 			+ "WHERE { ?s rdfs:label ?o ."
 			+		" ?s ?filter ?val }";
+	
+	private final static String INCR_INDEX = 
+			"PREFIX luc: <http://www.ontotext.com/owlim/lucene#> "
+			+ "INSERT DATA { luc:myIndex luc:updateIndex _:b1 . }";
 	
 	/**
 	 * Get string as URI
@@ -151,6 +156,13 @@ public abstract class RdfResource {
 		Map<String,Value> map = new HashMap();
 		map.put("s", asURI(url));
 		return prepare(Q_IRI, map);		
+	}
+	
+	/**
+	 * Incremental update for Lucene FTS
+	 */
+	protected void incrementFTS() {
+		prepare(INCR_INDEX, Collections.EMPTY_MAP);
 	}
 	
 	/**
