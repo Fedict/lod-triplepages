@@ -13,7 +13,8 @@ Data and configuration is stored on a docker volume
 These sets are not updated, there are no guarantees on availability and correctness.
 
   * [Crossroad Banks Enterprises](doc/CBE_NACEBEL.md)
-  * [NACEbel 2008 codes](doc/CBE_NACEBEL.md) 
+  * [Company types](doc/CBE_NACEBEL.md)
+  * [NACEbel 2008 codes](doc/CBE_NACEBEL.md)
   * [Fedict's FSB services](doc/FSB.md) 
   * [Demo link store for WCMS](doc/LINK.md)
   * [Fedict's Framework Contracts](doc/PROCUREMENT.md)
