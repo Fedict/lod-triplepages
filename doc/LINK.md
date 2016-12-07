@@ -63,6 +63,18 @@ file can be uploaded using curl (or any other HTTP-tool) using the following com
 curl -v -T test.ttl -H "Content-Type: text/turtle" --basic http://user:pass@link.belgif.be/link
 ```
 
+## Updating full text search index
+
+The (Lucene) full text search index is not updated automatically,
+one has to update the FTS after one or more PUTs.
+
+This requires HTTP basic authentication (i.e. a username and password)
+
+Assuming the username is `user` and the password `pass`, the index can be incrementally 
+updated using curl (or any other HTTP-tool) using the following command: 
+```
+curl -v --request PATCH --basic http://user:pass@link.belgif.be/link/_reindex
+```
 
 ## Removing a link (DELETE)
 

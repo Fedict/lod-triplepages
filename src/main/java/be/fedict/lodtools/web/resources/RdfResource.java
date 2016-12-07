@@ -50,6 +50,7 @@ import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryEvaluationException;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.QueryResults;
+import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
@@ -109,12 +110,25 @@ public abstract class RdfResource {
 	}
 	
 	/**
-	 * Prepare a SPARQL query
-	 * @param qry
-	 * @param bindings bindings (if any)
-	 * @return 
+	 * Prepare and run a SPARQL update
+	 * @param upd update string
 	 */
-	protected Model prepare(String qry, Map<String,Value> bindings) {
+	protected void update(String upd) {
+		try (RepositoryConnection conn = this.repo.getConnection()) {
+			Update uq = conn.prepareUpdate(QueryLanguage.SPARQL, upd);
+			uq.execute();
+		} catch (RepositoryException|MalformedQueryException|QueryEvaluationException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+	
+	/**
+	 * Prepare and run a SPARQL query
+	 * @param qry query string
+	 * @param bindings bindings (if any)
+	 * @return results in triple model
+	 */
+	protected Model query(String qry, Map<String,Value> bindings) {
 		try (RepositoryConnection conn = this.repo.getConnection()) {
 			GraphQuery gq = conn.prepareGraphQuery(QueryLanguage.SPARQL, qry);
 			bindings.forEach((k,v) -> gq.setBinding(k, v));
@@ -156,7 +170,7 @@ public abstract class RdfResource {
 		if (from != null) {
 			qry = qry.replaceFirst("WHERE", "FROM <" + from + "> WHERE");
 		}
-		return prepare(qry, Collections.EMPTY_MAP);
+		return query(qry, Collections.EMPTY_MAP);
 	}
 	
 	/**
@@ -168,14 +182,14 @@ public abstract class RdfResource {
 	protected Model getById(String url) {
 		Map<String,Value> map = new HashMap();
 		map.put("s", asURI(url));
-		return prepare(Q_IRI, map);		
+		return query(Q_IRI, map);		
 	}
 	
 	/**
 	 * Incremental update for Lucene FTS
 	 */
 	protected void incrementFTS() {
-		prepare(INCR_INDEX, Collections.EMPTY_MAP);
+		update(INCR_INDEX);
 	}
 	
 	/**
@@ -202,7 +216,7 @@ public abstract class RdfResource {
 		if (from != null) {
 			qry = qry.replaceFirst("WHERE", "FROM <" + from + "> WHERE");
 		}
-		return prepare(qry, map);
+		return query(qry, map);
 	}
 	
 	/**
@@ -234,7 +248,7 @@ public abstract class RdfResource {
 		if (from != null) {
 			qry = qry.replaceFirst("WHERE", "FROM <" + from + "> WHERE");
 		}
-		return prepare(qry , map);
+		return query(qry , map);
 	}
 	
 	
