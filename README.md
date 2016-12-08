@@ -25,19 +25,32 @@ These sets are not updated, there are no guarantees on availability and correctn
 
 ### Front-end
 
-A custom [Dropwizard](http://www.dropwizard.io/) application, the default Dropwizard port (8080) is forwarded to port 80 (HTTP)
+A custom [Dropwizard](http://www.dropwizard.io/) application, using a YAML config file, the default Dropwizard port (8080) is forwarded to port 80 (HTTP), and the container is automatically restarted when it exists unexpectedly (e.g. server reboot)  
 
 ```
-docker run --name dw -p 80:8080 -d 
+docker run 
+--restart=unless-stopped
+--name dw 
+-p 80:8080 
+-d 
 -e "DW_CFG=/home/dropwizard/config.yml" 
 -v /home/opendata/data/pages:/home/dropwizard barthanssens/lod-triplepages
 ```
 
-A YAML config file is required to configure the connection to the triple store and logging.
+A YAML config file is required to configure the connection to the triple store and logging of HTTP requests and Java exceptions.
+
 ```
 sparqlPoint: "http://172.17.0.2:7200"
 username: myuser
 password: verysecret
+
+server:
+  requestLog:
+    appenders:
+    - type: file
+      archivedFileCount: 5
+      archivedLogFilenamePattern: /home/dropwizard/logs/dw-%d-request.log.gz
+      currentLogFilename: /home/dropwizard/logs/dw-request.log
 
 logging:
   level: INFO
@@ -50,11 +63,11 @@ logging:
 
 ### RDF Triple Store
 
-This can be a [GraphDB](doc/GRAPHDB.md) triple store, or another store supporting Sesame / RDF4j.
-Optionally, the default workbench port (7200) can be forwarded to port 443
+This can be a [GraphDB](doc/GRAPHDB.md) triple store, or another store supporting [RDF4j](http://rdf4j.org/).
+Optionally, the default GrapHDB workbench port (7200) can be forwarded to e.g. port 8443
 
 ```
-docker run --name graphdb7 -p 443:7200 -d 
+docker run --name graphdb7 -p 8443:7200 -d 
 -v /home/opendata/data/graphdb:/home/graphdb/data barthanssens/graphdb
 ```
 
