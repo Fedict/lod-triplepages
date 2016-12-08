@@ -25,15 +25,14 @@ These sets are not updated, there are no guarantees on availability and correctn
 
 ### Front-end
 
-A custom [Dropwizard](http://www.dropwizard.io/) application, using a YAML config file, the default Dropwizard port (8080) is forwarded to port 80 (HTTP), and the container is automatically restarted when it exists unexpectedly (e.g. server reboot)  
+A custom [Dropwizard](http://www.dropwizard.io/) application, provided as a pre-built local image `barthanssens/lod-triplepages`
+
+In this example the image uses an environment variable `DW_CFG` to set the location of the YAML config file, the default Dropwizard port (8080) is mapped to port 80 (HTTP), and the container `dw` is automatically restarted when it exits unexpectedly (e.g. server reboot).
+
+Inside the container, the home folder is used to store persistent data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/pages`
 
 ```
-docker run 
---restart=unless-stopped
---name dw 
--p 80:8080 
--d 
--e "DW_CFG=/home/dropwizard/config.yml" 
+docker run --restart=unless-stopped --name dw -p 80:8080 -d -e "DW_CFG=/home/dropwizard/config.yml" 
 -v /home/opendata/data/pages:/home/dropwizard barthanssens/lod-triplepages
 ```
 
@@ -64,10 +63,10 @@ logging:
 ### RDF Triple Store
 
 This can be a [GraphDB](doc/GRAPHDB.md) triple store, or another store supporting [RDF4j](http://rdf4j.org/).
-Optionally, the default GrapHDB workbench port (7200) can be forwarded to e.g. port 8443
+In this example the default GrapHDB workbench port (7200) is mapped to the host port 8443
 
 ```
-docker run --name graphdb7 -p 8443:7200 -d 
+docker run --restart=unless-stopped --name graphdb7 -p 8443:7200 -d 
 -v /home/opendata/data/graphdb:/home/graphdb/data barthanssens/graphdb
 ```
 
