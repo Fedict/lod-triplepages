@@ -23,17 +23,37 @@ These sets are not updated, there are no guarantees on availability and correctn
 
 ## Docker containers
 
-### Front-end
+### Proxy
+
+The idea is to create one Dropwizard application and subdomain per dataset type.
+The [Nginx-proxy] (https://github.com/jwilder/nginx-proxy) docker is used to send the requests to the Dropwizard microservices. The container is set to automatically restart when it exits unexpectedly.
+
+```
+docker run --restart=unless-stopped -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+```
+
+### Vocab front-end + embedded RDF store
+
+A custom [Dropwizard](http://www.dropwizard.io/) application, provided as a pre-built local image `barthanssens/lod-vocab`
+
+See also [lod-vocab](https://github.com/Fedict/lod-vocab)
+
+In this example the image uses an environment variable `DW_CFG` to set the location of the YAML config file. The default Dropwizard port (8080) and the name of the subdomain (`vocab.belgif.be`) are used by the nginx-proxy. 
+Inside the container, the home directory `/home/dropwizard` is used to store persistent data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/vocab`. This directory must be read/writable for the container.
+
+```
+docker run --name vocab -d  -e "DW_CFG=/home/dropwizard/config.yml" -e "VIRTUAL_HOST=vocab.belgif.be" -e "VIRTUAL_PORT=8080" -v /home/opendata/data/vocab:/home/dropwizard barthanssens/lod-vocab
+```
+
+### Front-end for other datatypes
 
 A custom [Dropwizard](http://www.dropwizard.io/) application, provided as a pre-built local image `barthanssens/lod-triplepages`
 
-In this example the image uses an environment variable `DW_CFG` to set the location of the YAML config file, the default Dropwizard port (8080) is mapped to port 80 (HTTP), and the container `dw` is automatically restarted when it exits unexpectedly (e.g. server reboot).
-
-Inside the container, the home folder is used to store persistent data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/pages`
+In this example the image uses an environment variable `DW_CFG` to set the location of the YAML config file. The default Dropwizard port (8080) and the name of the subdomains (`org.belgif.be`...) are used by the nginx-proxy. 
+Inside the container, the home directory `/home/dropwizard` is used to store persistent data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/pages`. This directory must be read/writable for the container.
 
 ```
-docker run --restart=unless-stopped --name dw -p 80:8080 -d -e "DW_CFG=/home/dropwizard/config.yml" 
--v /home/opendata/data/pages:/home/dropwizard barthanssens/lod-triplepages
+docker run --restart=unless-stopped --name dw -d -e "VIRTUALHOST=org.belgif.be,form.belgif.be,pubserv.belgif.be,link.belgif.be" -e "DW_CFG=/home/dropwizard/config.yml" -v /home/opendata/data/pages:/home/dropwizard barthanssens/lod-triplepages
 ```
 
 A YAML config file is required to configure the connection to the triple store and logging of HTTP requests and Java exceptions.
@@ -43,6 +63,13 @@ sparqlPoint: "http://172.17.0.2:7200"
 username: myuser
 password: verysecret
 
+logging:
+  level: INFO
+  appenders:
+  - type: file
+    archive: false
+    currentLogFilename: /home/dropwizard/dw.log
+  
 server:
   requestLog:
     appenders:
