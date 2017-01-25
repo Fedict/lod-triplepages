@@ -32,13 +32,9 @@ import be.fedict.lodtools.web.helpers.RDFMessageBodyReader;
 import be.fedict.lodtools.web.helpers.RDFMessageBodyWriter;
 import be.fedict.lodtools.web.resources.CpsvResource;
 import be.fedict.lodtools.web.resources.FsbResource;
-import be.fedict.lodtools.web.resources.IwfResource;
-import be.fedict.lodtools.web.resources.GeoResource;
-import be.fedict.lodtools.web.resources.LinkResource;
 import be.fedict.lodtools.web.resources.OrgResource;
 import be.fedict.lodtools.web.resources.ProcResource;
 import be.fedict.lodtools.web.resources.RdfResource;
-import be.fedict.lodtools.web.resources.VocabResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
@@ -105,17 +101,15 @@ public class App extends Application<AppConfig> {
 		// Authentication
 		env.jersey().register(new AuthDynamicFeature(
 				new BasicCredentialAuthFilter.Builder<DummyUser>()
-						.setAuthenticator(new UpdateAuth())
+						.setAuthenticator(
+								new UpdateAuth(config.getUsername(), config.getPassword()))
 						.buildAuthFilter()));
 		
 		// Repositories
 		Map<String,Class<RdfResource>> map = new HashMap() {{
 			put("CBE", OrgResource.class);
 			put("FSB", FsbResource.class);
-			put("GEO", GeoResource.class);
-			put("VOCAB", VocabResource.class);
 			put("CPSV", CpsvResource.class);
-			put("LINK", LinkResource.class);
 			put("IWF", ProcResource.class);
 		}};
 		

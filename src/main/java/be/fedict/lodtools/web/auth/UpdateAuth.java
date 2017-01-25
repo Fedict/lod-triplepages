@@ -37,13 +37,25 @@ import java.util.Optional;
  * @author Bart.Hanssens
  */
 public class UpdateAuth implements Authenticator<BasicCredentials, DummyUser> {
+	private final String username;
+	private final String password;
+			
 	@Override
 	public Optional<DummyUser> authenticate(BasicCredentials c) throws AuthenticationException {
-		if (c.getUsername().equals("sandman") && c.getPassword().equals("enter")) {
+		if (c.getUsername().equals(username) && c.getPassword().equals(password)) {
 			return Optional.of(new DummyUser());
 		} 
 		return Optional.empty();
-				
 	}
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param username
+	 * @param password 
+	 */
+	public UpdateAuth(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
 }

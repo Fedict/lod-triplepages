@@ -67,7 +67,7 @@ public class OrgResource extends RdfResource {
 	@Path("/_filter")
 	@ExceptionMetered
 	public Model searchByNace(@QueryParam("nace") String text) {
-		return getFiltered(ACTIVITY, VocabResource.PREFIX, text + "#id");
+		return getFiltered(ACTIVITY, PREFIX, text + "#id");
 	}
 	
 	public OrgResource(Repository repo) {

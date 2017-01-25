@@ -80,7 +80,7 @@ public class FsbResource extends RdfResource {
 	@Path("/_filter")
 	@ExceptionMetered
 	public Model searchByFamily(@QueryParam("family") String text) {
-		return getFiltered(FAMILY, VocabResource.PREFIX, text + "#id");
+		return getFiltered(FAMILY, PREFIX, text + "#id");
 	}
 	
 /*
