@@ -1,0 +1,21 @@
+# Dropwizard  vocab.belgif.be
+FROM openjdk:8-jre-alpine
+MAINTAINER Bart Hanssens <bart.hanssens@fedict.be>
+
+RUN apk update && apk upgrade && \
+  apk add --no-cache wget ca-certificates && update-ca-certificates
+RUN adduser -S dropwizard
+COPY lod-vocab-1.0.jar /usr/local/bin/lod-vocab.jar
+
+USER dropwizard
+WORKDIR /home/dropwizard
+
+ENV JAVA_OPT=""
+ENV DW_CFG=""
+
+CMD java -server ${JAVA_OPT} -jar /usr/local/bin/lod-vocab.jar server ${DW_CFG}
+
+EXPOSE 8080 8081
+
+
+VOLUME /home/dropwizard
