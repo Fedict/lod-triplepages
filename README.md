@@ -18,7 +18,7 @@ These sets are not updated, there are no guarantees on availability and correctn
   * [Fedict's FSB services](doc/FSB.md) 
   * [Demo link store for WCMS](doc/LINK.md)
   * [Fedict's Framework Contracts](doc/PROCUREMENT.md)
-  * [Various code lists, themes...](/Fedict/lod-vocab/blob/master/README.md)
+  * [Various code lists, themes...](https://github.com/Fedict/lod-vocab/blob/master/README.md)
 
 
 
