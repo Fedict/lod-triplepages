@@ -19,5 +19,9 @@ These sets are not updated, there are no guarantees on availability and correctn
   * [Demo link store for WCMS](https://github.com/Fedict/lod-link/blob/master/README.md)
   * [Fedict's Framework Contracts](doc/PROCUREMENT.md)
   * [Various code lists, themes...](https://github.com/Fedict/lod-vocab/blob/master/README.md)
+  
+  ## Other
+  
+   * [Visualization in the browser](https://github.com/Fedict/lod-triplewalk/blob/master/README.md)
 
 
