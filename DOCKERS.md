@@ -3,7 +3,8 @@
 ## Proxy
 
 The idea is to create one Dropwizard application and subdomain per dataset type.
-The [Nginx-proxy] (https://github.com/jwilder/nginx-proxy) docker is used to send the requests to the Dropwizard microservices. The container is set to automatically restart when it exits unexpectedly.
+The [Nginx-proxy](https://github.com/jwilder/nginx-proxy) docker is used to send the requests to the Dropwizard microservices. The container is set to automatically restart when it exits unexpectedly.
+
 Inside the container, the home directory `/etc/nginx/vhost.d` is used to store persistent vhost-specific configuration data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/nginx/vhost.d`. This directory must be readable for the container.
 ```
 docker run --restart=unless-stopped -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy -v /home/opendata/data/nginx/vhost.d/:/etc/nginx/vhost.d
