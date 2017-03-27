@@ -4,9 +4,15 @@
 
 The idea is to create one Dropwizard application and subdomain per dataset type.
 The [Nginx-proxy] (https://github.com/jwilder/nginx-proxy) docker is used to send the requests to the Dropwizard microservices. The container is set to automatically restart when it exits unexpectedly.
-
+Inside the container, the home directory `/etc/nginx/vhost.d` is used to store persistent vhost-specific configuration data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/nginx/vhost.d`. This directory must be readable for the container.
 ```
-docker run --restart=unless-stopped -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+docker run --restart=unless-stopped -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy -v /home/opendata/data/nginx/vhost.d/:/etc/nginx/vhost.d
+```
+
+To allow browser-based tools like the visualizationtool, one should add CORS-headers to the responses of the various LOD containers. This can be done by adding these HTTP headers in the `default` nginx vhost configuration, e.g. 
+```
+add_header 'Access-Control-Allow-Origin' '*' ;
+add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' ;
 ```
 
 ## Vocab front-end with embedded RDF store
@@ -24,7 +30,7 @@ docker run --name vocab -d  -e "DW_CFG=/home/dropwizard/config.yml" -e "VIRTUAL_
 
 ## Link front-end with embedded RDF store
 
-Similar tp vocab front-end, see also  [lod-link](https://github.com/Fedict/lod-link)
+Similar to vocab front-end, see also  [lod-link](https://github.com/Fedict/lod-link)
 
 ## Front-end for other datatypes
 
