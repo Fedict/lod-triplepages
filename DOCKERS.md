@@ -7,7 +7,7 @@ The [Nginx-proxy](https://github.com/jwilder/nginx-proxy) docker is used to send
 
 Inside the container, the home directory `/etc/nginx/vhost.d` is used to store persistent vhost-specific configuration data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/nginx/vhost.d`. This directory must be readable for the container.
 ```
-docker run --restart=unless-stopped -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy -v /home/opendata/data/nginx/vhost.d/:/etc/nginx/vhost.d
+docker run --name nginx --restart=unless-stopped -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy -v /home/opendata/data/nginx/vhost.d/:/etc/nginx/vhost.d
 ```
 
 To allow browser-based tools like the visualizationtool, one should add CORS-headers to the responses of the various LOD containers. This can be done by adding these HTTP headers in the `default` nginx vhost configuration, e.g. 
