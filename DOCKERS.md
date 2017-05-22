@@ -26,7 +26,7 @@ In this example the image uses an environment variable `DW_CFG` to set the locat
 Inside the container, the home directory `/home/dropwizard` is used to store persistent data as a docker volume, mapped/mounted to the host file system `/home/opendata/data/vocab`. This directory must be read/writable for the container.
 
 ```
-docker run --name vocab -d  -e "DW_CFG=/home/dropwizard/config.yml" -e "VIRTUAL_HOST=vocab.belgif.be" -e "VIRTUAL_PORT=8080" -v /home/opendata/data/vocab:/home/dropwizard barthanssens/lod-vocab
+docker run --name vocab -d  -e "DW_CFG=/home/dropwizard/config.yml" -e "VIRTUAL_HOST=vocab.belgif.be" -e "VIRTUAL_PORT=8080" -e "HTTPS_METHOD=noredirect" -v /home/opendata/data/vocab:/home/dropwizard barthanssens/lod-vocab
 ```
 
 ## Link front-end with embedded RDF store
